@@ -1,0 +1,20 @@
+<ABtest>
+    <Strategy>
+        <Name>main.SelectHash</Name>
+        <Config>30:t1;70:t2</Config>
+    </Strategy>
+    <Target>
+        <Name>t1</Name>
+        <Strategy>
+            <Name>main.SelectHash</Name>
+            <Config>30:r1;70:r2</Config>
+        </Strategy>
+    </Target>
+    <Target>
+        <Name>t2</Name>
+        <Strategy>
+            <Name>main.SelectHash</Name>
+            <Config>100:r1</Config>
+        </Strategy>
+    </Target>
+</ABtest>

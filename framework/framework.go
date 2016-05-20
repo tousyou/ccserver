@@ -11,12 +11,11 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/judwhite/go-svc/svc"
 	"github.com/mreiferson/go-options"
-	"github.com/nsqio/nsq/internal/version"
-	"github.com/nsqio/nsq/nsqlookupd"
+    "./matchserver"
 )
 
 var (
-	flagSet = flag.NewFlagSet("nsqlookupd", flag.ExitOnError)
+	flagSet = flag.NewFlagSet("matchserver", flag.ExitOnError)
 
 	config      = flagSet.String("config", "", "path to config file")
 	showVersion = flagSet.Bool("version", false, "print version string")
@@ -31,7 +30,7 @@ var (
 )
 
 type program struct {
-	nsqlookupd *nsqlookupd.NSQLookupd
+    matchserver *matchserver.MatchServer
 }
 
 func main() {
@@ -53,7 +52,7 @@ func (p *program) Start() error {
 	flagSet.Parse(os.Args[1:])
 
 	if *showVersion {
-		fmt.Println(version.String("nsqlookupd"))
+		fmt.Println("matchserver")
 		os.Exit(0)
 	}
 
@@ -65,18 +64,18 @@ func (p *program) Start() error {
 		}
 	}
 
-	opts := nsqlookupd.NewOptions()
+	opts := matchserver.NewOptions()
 	options.Resolve(opts, flagSet, cfg)
-	daemon := nsqlookupd.New(opts)
+	daemon := matchserver.New(opts)
 
 	daemon.Main()
-	p.nsqlookupd = daemon
+	p.matchserver = daemon
 	return nil
 }
 
 func (p *program) Stop() error {
-	if p.nsqlookupd != nil {
-		p.nsqlookupd.Exit()
+	if p.matchserver != nil {
+		p.matchserver.Exit()
 	}
 	return nil
 }
